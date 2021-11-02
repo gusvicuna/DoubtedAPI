@@ -27,18 +27,18 @@ namespace DoubtedAPI.Controllers
             return await _context.Users.ToListAsync();
         }
 
-        // GET: api/Users/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUser(long id)
+        // GET: api/Users/Gus
+        [HttpGet("{username}")]
+        public async Task<ActionResult<User>> GetUser(string username)
         {
-            var user = await _context.Users.FindAsync(id);
+            var users = await _context.Users.Where(i => i.Username == username).ToListAsync();
 
-            if (user == null)
+            if (users.Count == 0)
             {
                 return NotFound();
             }
 
-            return user;
+            else return users[0];
         }
 
         // PUT: api/Users/5
@@ -82,7 +82,7 @@ namespace DoubtedAPI.Controllers
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
+            return CreatedAtAction(nameof(GetUsers), new { id = user.Id }, user);
         }
 
         // DELETE: api/Users/5
