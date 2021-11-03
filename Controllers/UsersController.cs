@@ -179,6 +179,21 @@ namespace DoubtedAPI.Controllers
             return user;
         }
 
+        // DELETE: api/Users/5/friends/2
+        [HttpDelete("{id}/friends/{id2}")]
+        public async Task<ActionResult<Friendship>> DeleteFriendship(long id,long id2) {
+            var friends = await _friendshipContext.Friendships.Where(f => 
+                (f.InvitatorId == id & f.InvitatedId == id2) | (f.InvitatedId == id & f.InvitatorId == id2)).ToListAsync();
+            if (friends.Count == 0) {
+                return BadRequest();
+            }
+
+            _friendshipContext.Friendships.Remove(friends[0]);
+            await _friendshipContext.SaveChangesAsync();
+
+            return friends[0];
+        }
+
         private bool UserExists(long id)
         {
             return _context.Users.Any(e => e.Id == id);
