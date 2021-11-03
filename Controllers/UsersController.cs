@@ -14,10 +14,12 @@ namespace DoubtedAPI.Controllers
     public class UsersController : ControllerBase
     {
         private readonly UserContext _context;
+        private readonly FriendshipContext _friendshipContext;
 
-        public UsersController(UserContext context)
+        public UsersController(UserContext context, FriendshipContext friendshipContext)
         {
             _context = context;
+            _friendshipContext = friendshipContext;
         }
 
         // GET: api/Users
@@ -39,6 +41,28 @@ namespace DoubtedAPI.Controllers
             }
 
             else return users[0];
+        }
+
+        // GET: api/Users/1/friends
+        [HttpGet("{id}/friends")]
+        public async Task<ActionResult<IEnumerable<Friendship>>> GetFriends(long id) {
+            var user = await _context.Users.FindAsync(id);
+            if (user == null) return BadRequest();
+
+            var friends = await _friendshipContext.Friendships.Where(f => (f.InvitatorId == id | f.InvitatedId == id ) & f.Accepted).Include(f => f.InvitatorUser).Include(f => f.InvitatedUser).ToListAsync();
+
+            return friends;
+        }
+
+        // GET: api/Users/1/friendNotifications
+        [HttpGet("{id}/friendNotifications")]
+        public async Task<ActionResult<IEnumerable<Friendship>>> GetFriendNotifications(long id) {
+            var user = await _context.Users.FindAsync(id);
+            if (user == null) return NotFound();
+
+            var friends = await _friendshipContext.Friendships.Where(f => f.InvitatedId == id & !f.Accepted).Include(f => f.InvitatorUser).ToListAsync();
+
+            return friends;
         }
 
         // PUT: api/Users/5
@@ -73,6 +97,39 @@ namespace DoubtedAPI.Controllers
             return NoContent();
         }
 
+        // PUT: api/Users/5/friends/2
+        [HttpPut("{id}/friends/{id2}")]
+        public async Task<IActionResult> AcceptFriendship(long id, long id2) {
+
+            var user = await _context.Users.FindAsync(id);
+            if (user == null) return BadRequest();
+
+            var user2 = await _context.Users.FindAsync(id2);
+            if (user2 == null) return BadRequest();
+
+            var friends = await _friendshipContext.Friendships.Where(f => ((f.InvitatorId == id & f.InvitatedId == id2) | (f.InvitatedId == id & f.InvitatorId == id2)) & !f.Accepted).ToListAsync();
+            if (friends.Count == 0) return BadRequest();
+
+            var friendship = friends[0];
+            friendship.Accepted = true;
+
+            _friendshipContext.Entry(friendship).State = EntityState.Modified;
+
+            try {
+                await _friendshipContext.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException) {
+                if (!UserExists(id)) {
+                    return NotFound();
+                }
+                else {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
         // POST: api/Users
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
@@ -83,6 +140,27 @@ namespace DoubtedAPI.Controllers
             await _context.SaveChangesAsync();
 
             return CreatedAtAction(nameof(GetUsers), new { id = user.Id }, user);
+        }
+
+        // POST: api/Users/1/friends
+        [HttpPost("{id}/friends")] 
+        public async Task<ActionResult<User>> PostUser(long id, User friendUser)
+        {
+
+            var user = await _context.Users.FindAsync(id); 
+            if (user == null) return NotFound();
+
+            Friendship friendship = new Friendship
+            {
+                InvitatorId = id,
+                InvitatorUser = user,
+                InvitatedId = friendUser.Id,
+                InvitatedUser = friendUser
+            };
+            _friendshipContext.Friendships.Add(friendship);
+            await _friendshipContext.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(GetFriendNotifications), new { id = friendship.Id }, friendship);
         }
 
         // DELETE: api/Users/5
