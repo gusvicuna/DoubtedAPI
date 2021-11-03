@@ -33,6 +33,8 @@ namespace DoubtedAPI {
                 opt.UseInMemoryDatabase("UserList"));
             services.AddDbContext<FriendshipContext>(opt =>
                 opt.UseInMemoryDatabase("FriendshipList"));
+            services.AddDbContext<GameContext>(opt =>
+                opt.UseInMemoryDatabase("GameList"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
