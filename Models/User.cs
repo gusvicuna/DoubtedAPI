@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -16,5 +17,7 @@ namespace DoubtedAPI.Models {
         public int CalzadasCorrectas { get; set; }
         public int CalzadasIncorrectas { get; set; }
         //public List<int> DadosAlGanar { get; set; }
+        [JsonIgnore]
+        public List<Player> players { get; set; }
     }
 }

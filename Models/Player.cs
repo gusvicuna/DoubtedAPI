@@ -14,9 +14,9 @@ namespace DoubtedAPI.Models
         public int[] dados = new int[] {1,2,3,4,5,6 };
 
         public long GameId { get; set; }
-        public Game game { get; set; }
+        //public Game game { get; set; }
         public long UserId { get; set; }
-        public User user { get; set; }
+        //public User user { get; set; }
 
         /*  descomentar cuando se agregue prediction
         public long PredictionId { get; set; }

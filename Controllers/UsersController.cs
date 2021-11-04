@@ -75,7 +75,7 @@ namespace DoubtedAPI.Controllers
             var user = await _context.Users.FindAsync(id);
             if (user == null) return BadRequest();
 
-            var players = await _contextPlayer.Players.Where(u => u.UserId == id).Include(g => g.game).ToListAsync();
+            var players = await _contextPlayer.Players.Where(u => u.UserId == id).ToListAsync();
 
             return players;
         }

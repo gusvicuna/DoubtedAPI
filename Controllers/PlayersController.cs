@@ -88,8 +88,8 @@ namespace DoubtedAPI.Controllers
             var mgame = await _contextGame.Games.FindAsync(player.GameId);
             if (mgame == null) return NotFound();
 
-            player.game = mgame;
-            player.user = user;
+            //player.game = mgame;
+            //player.user = user;
 
             _context.Players.Add(player);
             await _context.SaveChangesAsync();

@@ -12,6 +12,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using DoubtedAPI.Models;
+using Newtonsoft.Json;
 
 namespace DoubtedAPI {
     public class Startup {
@@ -26,8 +27,12 @@ namespace DoubtedAPI {
         {
             services.AddSwaggerGen();
             services.AddControllers();
+            services.AddMvc(option => option.EnableEndpointRouting = false)
+                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
+                .AddNewtonsoftJson(opt => opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
 
-            
+
+
 
             services.AddDbContext<UserContext>(opt => 
                 opt.UseInMemoryDatabase("UserList"));

@@ -15,5 +15,7 @@ namespace DoubtedAPI.Models
         }
 
         public DbSet<Player> Players { get; set; }
+
+        
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -16,6 +17,7 @@ namespace DoubtedAPI.Models
         public int PlayerTurn { get; set; }
         public bool GameStarted { get; set; }
         public bool Obligando { get; set; }
-
+        [JsonIgnore]
+        public List<Player> players { get; set; }
     }
 }
