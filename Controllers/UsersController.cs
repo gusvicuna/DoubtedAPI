@@ -70,14 +70,25 @@ namespace DoubtedAPI.Controllers
         }
         //Get: api/Users/1/players
         [HttpGet("{id}/players")]
-        public async Task<ActionResult<IEnumerable<Player>>> GetPlayers(long id)
+        public async Task<ActionResult<IEnumerable<Game>>> GetPlayers(long id)
         {
             var user = await _context.Users.FindAsync(id);
             if (user == null) return BadRequest();
 
             var players = await _contextPlayer.Players.Where(u => u.UserId == id).ToListAsync();
-
-            return players;
+            var mygamesid = new List<long>();
+            foreach(Player player in players)
+            {
+                mygamesid.Add(player.GameId);
+            }
+            var games = new List<Game>();
+            foreach(long mgid in mygamesid)
+            {
+                var game = await _contextGame.Games.FindAsync(mgid);
+                if (game == null) continue;
+                games.Add(game);
+            }
+            return games;
         }
 
         // PUT: api/Users/5
