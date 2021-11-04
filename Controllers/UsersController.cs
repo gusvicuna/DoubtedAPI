@@ -68,6 +68,17 @@ namespace DoubtedAPI.Controllers
 
             return friends;
         }
+        // GET: api/Users/1/GameNotifications
+        [HttpGet("{id}/GameNotifications")]
+        public async Task<ActionResult<IEnumerable<Player>>> GetGameNotifications(long id)
+        {
+            var user = await _context.Users.FindAsync(id);
+            if (user == null) return NotFound();
+
+            var friends = await _contextPlayer.Players.Where(u => u.UserId == id & !u.AcceptationState).ToListAsync();
+
+            return friends;
+        }
         //Get: api/Users/1/players
         [HttpGet("{id}/players")]
         public async Task<ActionResult<IEnumerable<Game>>> GetPlayers(long id)
