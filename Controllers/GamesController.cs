@@ -14,10 +14,12 @@ namespace DoubtedAPI.Controllers
     public class GamesController : ControllerBase
     {
         private readonly GameContext _context;
+        private readonly PlayerContext _contextPlayer;
 
-        public GamesController(GameContext context)
+        public GamesController(GameContext context, PlayerContext playerContext)
         {
             _context = context;
+            _contextPlayer = playerContext;
         }
 
         // GET: api/Games
@@ -39,6 +41,14 @@ namespace DoubtedAPI.Controllers
             }
 
             return game;
+        }
+
+        //Get: api/Games/1/players
+        [HttpGet("{id}/players")]
+        public async Task<ActionResult<IEnumerable<Player>>> GetOnePlayer(long id)
+        {
+            var player = await _contextPlayer.Players.Where(g => g.GameId == id ).ToListAsync();
+            return player;
         }
 
         // PUT: api/Games/5
