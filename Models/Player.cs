@@ -21,5 +21,6 @@ namespace DoubtedAPI.Models
         public string LastPType { get; set; }
         public int LastPQuantity { get; set; }
         public int LastPPinta { get; set; }
+        public int TurnNumber { get; set; }
     }
 }
