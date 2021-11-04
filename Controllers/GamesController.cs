@@ -27,18 +27,18 @@ namespace DoubtedAPI.Controllers
             return await _context.Games.ToListAsync();
         }
 
-        // GET: api/Games/GameName
-        [HttpGet("{GameName}")]
-        public async Task<ActionResult<Game>> GetGame(string gamename)
+        // GET: api/Games/1
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Game>> GetGame(long id)
         {
-            var game = await _context.Games.Where(i => i.GameName == gamename).ToListAsync();
+            var game = await _context.Games.FindAsync(id);
 
             if (game == null)
             {
                 return NotFound();
             }
 
-            return game[0];
+            return game;
         }
 
         // PUT: api/Games/5
