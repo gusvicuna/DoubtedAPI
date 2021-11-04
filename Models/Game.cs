@@ -17,11 +17,11 @@ namespace DoubtedAPI.Models
         public bool GameStarted { get; set; }
         public bool Obligando { get; set; }
 
-        public int Player1Id { get; set; }
-        public int Player2Id { get; set; }
-        public int Player3Id { get; set; }
-        public int Player4Id { get; set; }
-        public int Player5Id { get; set; }
+        public long Player1Id { get; set; }
+        public long Player2Id { get; set; }
+        public long Player3Id { get; set; }
+        public long Player4Id { get; set; }
+        public long Player5Id { get; set; }
         public Player Player1 { get; set; }
        /* public Player Player2 { get; set; }
         public Player Player3 { get; set; }

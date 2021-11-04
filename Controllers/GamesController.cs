@@ -17,9 +17,11 @@ namespace DoubtedAPI.Controllers
         private readonly PlayerContext _contextPlayer;
         private readonly UserContext _contextUser;
 
-        public GamesController(GameContext context)
+        public GamesController(GameContext context,PlayerContext playerContext, UserContext userContext)
         {
             _context = context;
+            _contextPlayer = playerContext;
+            _contextUser = userContext;
         }
 
         // GET: api/Games
@@ -82,7 +84,8 @@ namespace DoubtedAPI.Controllers
         public async Task<ActionResult<Game>> PostGame(Game game)
         {
             System.Diagnostics.Debug.WriteLine(game.Player1Id);
-            var user1 = _contextUser.Users.FindAsync((Int32)game.Player1Id);
+            var user1 = _contextUser.Users.FindAsync(game.Player1Id);
+            if (user1 == null) return BadRequest();
             /*var user2 = await _contextUser.Users.FindAsync(game.Player2Id);
             var user3 = await _contextUser.Users.FindAsync(game.Player3Id);
             var user4 = await _contextUser.Users.FindAsync(game.Player4Id);
