@@ -15,11 +15,15 @@ namespace DoubtedAPI.Controllers
     {
         private readonly UserContext _context;
         private readonly FriendshipContext _friendshipContext;
+        private readonly PlayerContext _contextPlayer;
+        private readonly GameContext _contextGame;
 
-        public UsersController(UserContext context, FriendshipContext friendshipContext)
+        public UsersController(UserContext context, FriendshipContext friendshipContext,PlayerContext playerContext, GameContext gameContext)
         {
             _context = context;
             _friendshipContext = friendshipContext;
+            _contextPlayer = playerContext;
+            _contextGame = gameContext;
         }
 
         // GET: api/Users
@@ -63,6 +67,17 @@ namespace DoubtedAPI.Controllers
             var friends = await _friendshipContext.Friendships.Where(f => f.InvitatedId == id & !f.Accepted).Include(f => f.InvitatorUser).ToListAsync();
 
             return friends;
+        }
+        //Get: api/Users/1/players
+        [HttpGet("{id}/players")]
+        public async Task<ActionResult<IEnumerable<Player>>> GetPlayers(long id)
+        {
+            var user = await _context.Users.FindAsync(id);
+            if (user == null) return BadRequest();
+
+            var players = await _contextPlayer.Players.Where(u => u.UserId == id).Include(g => g.game).ToListAsync();
+
+            return players;
         }
 
         // PUT: api/Users/5
