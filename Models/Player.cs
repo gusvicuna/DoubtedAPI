@@ -12,7 +12,7 @@ namespace DoubtedAPI.Models
         public bool AcceptationState { get; set; }
         //revisar este array
         public int[] dados = new int[] {1,2,3,4,5 };
-
+        public string Name { get; set; }
         public long GameId { get; set; }
         //public Game game { get; set; }
         public long UserId { get; set; }
