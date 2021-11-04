@@ -11,7 +11,7 @@ namespace DoubtedAPI.Models
         public bool HaObligando { get; set; }
         public bool AcceptationState { get; set; }
         //revisar este array
-        public int[] dados = new int[] {1,2,3,4,5,6 };
+        public int[] dados = new int[] {1,2,3,4,5 };
 
         public long GameId { get; set; }
         //public Game game { get; set; }
