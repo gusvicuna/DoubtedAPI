@@ -21,6 +21,7 @@ namespace DoubtedAPI.Models
         public bool Obligando { get; set; }
         public bool NewRound { get; set; }
         public bool CanCalzar { get; set; }
+        public bool CanObligar { get; set; }
 
         [JsonIgnore]
         public List<Player> players { get; set; }
