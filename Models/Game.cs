@@ -14,6 +14,7 @@ namespace DoubtedAPI.Models
         public string GameName { get; set; }
         public int MaxPlayers { get; set; }
         public int Round { get; set; }
+        public bool NewRound { get; set; }
         public int PlayerTurn { get; set; }
         public bool GameStarted { get; set; }
         public bool Obligando { get; set; }
