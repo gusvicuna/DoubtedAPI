@@ -14,6 +14,8 @@ namespace DoubtedAPI.Controllers
     public class GamesController : ControllerBase
     {
         private readonly GameContext _context;
+        private readonly PlayerContext _contextPlayer;
+        private readonly UserContext _contextUser;
 
         public GamesController(GameContext context)
         {
