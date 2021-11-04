@@ -81,6 +81,24 @@ namespace DoubtedAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<Game>> PostGame(Game game)
         {
+            System.Diagnostics.Debug.WriteLine(game.Player1Id);
+            var user1 = _contextUser.Users.FindAsync((Int32)game.Player1Id);
+            /*var user2 = await _contextUser.Users.FindAsync(game.Player2Id);
+            var user3 = await _contextUser.Users.FindAsync(game.Player3Id);
+            var user4 = await _contextUser.Users.FindAsync(game.Player4Id);
+            var user5 = await _contextUser.Users.FindAsync(game.Player5Id);
+
+            if (user1 != null)
+            {
+                Player player1 = new Player
+                {
+                   UserId = user1.Id,
+                   user = user1,
+                   game = game,
+                   GameId = game.Id
+                };
+                game.Player1 = player1;
+            }*/
             _context.Games.Add(game);
             await _context.SaveChangesAsync();
 
