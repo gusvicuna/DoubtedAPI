@@ -75,7 +75,7 @@ namespace DoubtedAPI.Controllers
             var user = await _context.Users.FindAsync(id);
             if (user == null) return BadRequest();
 
-            var players = await _contextPlayer.Players.Where(u => u.UserId == id).ToListAsync();
+            var players = await _contextPlayer.Players.Where(u => u.UserId == id & u.AcceptationState).ToListAsync();
             var mygamesid = new List<long>();
             foreach(Player player in players)
             {
@@ -90,6 +90,14 @@ namespace DoubtedAPI.Controllers
             }
             return games;
         }
+        //Get: api/Users/1/2/players
+        [HttpGet("{id}/{gameid}/players")]
+        public async Task<ActionResult<IEnumerable<Player>>> GetOnePlayer(long id, long gameid)
+        {
+            var player = await _contextPlayer.Players.Where(u => u.UserId == id & u.GameId == gameid).ToListAsync();
+            return player;
+        }
+
 
         // PUT: api/Users/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
