@@ -18,9 +18,8 @@ namespace DoubtedAPI.Models
         public long UserId { get; set; }
         //public User user { get; set; }
 
-        /*  descomentar cuando se agregue prediction
-        public long PredictionId { get; set; }
-        public Prediction prediction { get; set; }
-        */
+        public string LastPType { get; set; }
+        public int LastPQuantity { get; set; }
+        public int LastPPinta { get; set; }
     }
 }
