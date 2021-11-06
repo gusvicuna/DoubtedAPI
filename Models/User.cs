@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -16,7 +17,8 @@ namespace DoubtedAPI.Models {
         public int DudasIncorrectas { get; set; }
         public int CalzadasCorrectas { get; set; }
         public int CalzadasIncorrectas { get; set; }
-        //public List<int> DadosAlGanar { get; set; }
+        [NotMapped]
+        public List<int> DadosAlGanar { get; set; }
         [JsonIgnore]
         public List<Player> players { get; set; }
     }

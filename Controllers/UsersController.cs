@@ -17,13 +17,15 @@ namespace DoubtedAPI.Controllers
         private readonly FriendshipContext _friendshipContext;
         private readonly PlayerContext _contextPlayer;
         private readonly GameContext _contextGame;
+        private readonly CantidadDadoAlGanarContext _contextDado;
 
-        public UsersController(UserContext context, FriendshipContext friendshipContext,PlayerContext playerContext, GameContext gameContext)
+        public UsersController(UserContext context, FriendshipContext friendshipContext,PlayerContext playerContext, GameContext gameContext,CantidadDadoAlGanarContext cantidadDadoAlGanarContext)
         {
             _context = context;
             _friendshipContext = friendshipContext;
             _contextPlayer = playerContext;
             _contextGame = gameContext;
+            _contextDado = cantidadDadoAlGanarContext;
         }
 
         // GET: api/Users
@@ -38,6 +40,26 @@ namespace DoubtedAPI.Controllers
         public async Task<ActionResult<User>> GetUser(string username)
         {
             var users = await _context.Users.Where(i => i.Username == username).ToListAsync();
+            var dadosGanar = await _contextDado.cantidadDadoAlGanar.Where(u => u.myUserId == users[0].Id).ToListAsync();
+            if( dadosGanar.FirstOrDefault() != null)
+            {
+                if(dadosGanar[0] != null)
+                {
+                    Console.WriteLine(dadosGanar[0]);
+                    if (users[0].DadosAlGanar == null)
+                    {
+                        users[0].DadosAlGanar = new List<int>();
+                    }
+                
+                    foreach(CantidadDadoAlGanar dado in dadosGanar)
+                    {
+                        users[0].DadosAlGanar.Add(dado.NumeroDados);
+                    }
+                
+                }
+            }
+            
+            
 
             if (users.Count == 0)
             {
@@ -107,6 +129,14 @@ namespace DoubtedAPI.Controllers
         {
             var player = await _contextPlayer.Players.Where(u => u.UserId == id & u.GameId == gameid).ToListAsync();
             return player;
+        }
+
+        //GET: api/Users/1/dadoslist
+        [HttpGet("{id}/dadoslist")]
+        public async Task<ActionResult<IEnumerable<CantidadDadoAlGanar>>> GetDadosList(long id)
+        {
+            var dadosGanar = await _contextDado.cantidadDadoAlGanar.Where(u => u.myUserId == id).ToListAsync();
+            return dadosGanar;
         }
 
 
